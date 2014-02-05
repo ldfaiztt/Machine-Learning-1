@@ -64,14 +64,13 @@ def scale(w,multi):
 			w[x] = multi*w[x]
 	return w
 
-def perceptron_train(filename,linenum,maxiter):
-	w = InitWeight(filename,linenum)
+def perceptron_train(w,filename,linenum,maxiter):
 	wavg = copy.deepcopy(w)
 	matrix = getfx(w,filename,linenum,0)
 	k = 0
 	iters =0
 	err=1
-	while err!=0 and iters<=maxiter:
+	while err!=0 and iters<maxiter:
 		err=0
 		for i in range(0,linenum):
 			fx = matrix[i][0]
@@ -104,6 +103,9 @@ def reverse_sort_dict(x):
 
 if __name__ == '__main__':
 	
-	w=perceptron_train('spam_train.txt',4000,9)
-	print "averaged perceptron:",perceptron_test(w[3],'spam_test.txt',1000,0)
+
+	w = InitWeight('spam_train.txt',4000)
+	r = perceptron_train(w,'spam_train.txt',5000,10)
+	print "--- %d maximum iterations ---" %(r[2])
+	print "perceptron test error:%f" %(perceptron_test(r[3],'spam_test.txt',1000,0))
 	
